@@ -1,3 +1,6 @@
+#include <AsyncDelay.h>
+#include <SoftWire.h>
+
 #include <max86150.h>
 #include <Wire.h>
 #include "max86150.h"

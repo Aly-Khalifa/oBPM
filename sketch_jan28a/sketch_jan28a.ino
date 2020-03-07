@@ -22,7 +22,7 @@ uint16_t Bppgunsigned16;
 
 void setup()
 {
-    debug.begin(115200);
+    debug.begin(9600);
     debug.println("MAX86150 PPG Streaming Example");
     Wire.begin();
     
@@ -53,8 +53,6 @@ void setup()
 
     max86150Sensor2.setup(); //Configure sensor. Use 6.4mA for LED drive
 
-    TCA9548A(1);
-    TCA9548A(2);
 }
 
 void loop()
@@ -64,7 +62,7 @@ void loop()
     if(max86150Sensor1.check()>0)
     {
         Appgunsigned16 = (uint16_t) (max86150Sensor1.getFIFORed()>>2);
-        debug.println(Appgunsigned16);
+        Serial.print(Appgunsigned16);
     }
     
 
@@ -73,8 +71,9 @@ void loop()
     if(max86150Sensor2.check()>0)
     {
         Bppgunsigned16 = (uint16_t) (max86150Sensor2.getFIFORed()>>2);
-        debug.println(Bppgunsigned16);
+        Serial.print(",");
+        Serial.println(Bppgunsigned16);
     }
 
-delay(500);
+delay(1);
 }

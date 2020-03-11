@@ -53,7 +53,8 @@ static const uint8_t MAX86150_INT_ALC_OVF_ENABLE = 	0x20;
 static const uint8_t MAX86150_INT_ALC_OVF_DISABLE = 0x00;
 
 static const uint8_t MAX86150_INT_PROX_INT_MASK = (byte)~0b00010000;
-static const uint8_t MAX86150_INT_PROX_INT_ENABLE = 0x10;
+//static const uint8_t MAX86150_INT_PROX_INT_ENABLE  changed from 0x10 to 0x00
+static const uint8_t MAX86150_INT_PROX_INT_ENABLE = 0x00;
 static const uint8_t MAX86150_INT_PROX_INT_DISABLE = 0x00;
 
 static const uint8_t MAX86150_SAMPLEAVG_MASK =	(byte)~0b11100000;

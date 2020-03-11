@@ -36,7 +36,17 @@ void setup()
 
     debug.println(max86150Sensor1.readPartID());
 
-    max86150Sensor1.setup(); //Configure sensor. Use 6.4mA for LED drive
+    // testing code setup
+      byte powerLevel = 0x1F;
+      byte sampleAverage = 1;
+      byte ledMode = 3;
+      int sampleRate = 400;
+      int pulseWidth = 411;
+      int adcRange = 4096;
+    
+      max86150Sensor1.setup(powerLevel, sampleAverage, ledMode, sampleRate, pulseWidth, adcRange); 
+
+      //max86150Sensor1.setup(); //Configure sensor. Use 6.4mA for LED drive
 
 
 
@@ -61,7 +71,7 @@ void loop()
   
     if(max86150Sensor1.check()>0)
     {
-        Appgunsigned16 = (uint16_t) (max86150Sensor1.getFIFORed()>>2);
+        Appgunsigned16 = (uint16_t) (max86150Sensor1.getRed()>>2);
         Serial.print(Appgunsigned16);
     }
     
@@ -70,7 +80,7 @@ void loop()
   
     if(max86150Sensor2.check()>0)
     {
-        Bppgunsigned16 = (uint16_t) (max86150Sensor2.getFIFORed()>>2);
+        Bppgunsigned16 = (uint16_t) (max86150Sensor2.getRed()>>2);
         Serial.print(",");
         Serial.println(Bppgunsigned16);
     }

@@ -75,6 +75,7 @@ void loop()
         Serial.print(Appgunsigned16);
     }
     
+    else return;
 
   TCA9548A(2);
   
@@ -84,6 +85,8 @@ void loop()
         Serial.print(",");
         Serial.println(Bppgunsigned16);
     }
+     
+    else return;
 
 delay(1);
 }

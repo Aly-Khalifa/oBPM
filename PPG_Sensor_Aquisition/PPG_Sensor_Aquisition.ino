@@ -72,18 +72,21 @@ void loop()
     if(max86150Sensor1.check()>0)
     {
         Appgunsigned16 = (uint16_t) (max86150Sensor1.getRed()>>2);
-        Serial.print(Appgunsigned16);
+        debug.print(Appgunsigned16);
     }
     
+    else return;
 
   TCA9548A(2);
   
     if(max86150Sensor2.check()>0)
     {
         Bppgunsigned16 = (uint16_t) (max86150Sensor2.getRed()>>2);
-        Serial.print(",");
-        Serial.println(Bppgunsigned16);
+        debug.print(",");
+        debug.println(Bppgunsigned16);
     }
+     
+    else return;
 
 delay(1);
 }

@@ -3,7 +3,7 @@
 delete(instrfindall);
 clear;
 
-s = serial('COM4');
+s = serial('/dev/cu.usbmodem14201');
 set(s, 'FlowControl', 'none'); 
 set(s, 'BaudRate', 9600);
 set(s, 'Parity', 'none');
@@ -39,7 +39,7 @@ while (1)
      
      if isempty(y)
 %          y = 2040;
-         y = 63000; 
+         y = 0; 
          %y2 = 63000;
      end
 %      

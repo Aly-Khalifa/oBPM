@@ -5,6 +5,7 @@ classdef BPCalculator < handle
         CurrentDiastolic = 80
         SystolicCoefficients = [-0.4856 0.0399 0.9651 4.2448]'
         DiastolicCoefficients = [-0.0261 0.4993 0.9444 3.4074]'
+        BoxFilter = ones(1,3)/3
         
 
     end
@@ -12,7 +13,7 @@ classdef BPCalculator < handle
     
     methods
         
-        function [Sys, Dias] = CalculateBP(obj, time, proximalPPG, distalPPG)
+        function [Sys, Dias, PTT, HR] = CalculateBP(obj, time, proximalPPG, distalPPG)
             
             
             [PTT, HR] = obj.CalculatePTT(time, proximalPPG, distalPPG);
@@ -23,6 +24,12 @@ classdef BPCalculator < handle
             
             Sys = Sys_input*obj.SystolicCoefficients;
             Dias =  Dias_input*obj.DiastolicCoefficients;
+            
+            %make sure values are valid
+            
+            if (Dias > Sys) || (Sys>180) || (Dias > 160)
+                return
+            end
             
             obj.CurrentSystolic = Sys;
             obj.CurrentDiastolic = Dias;
@@ -42,10 +49,17 @@ classdef BPCalculator < handle
             time = time(indx);
             proximalPPG = proximalPPG(indx);
             distalPPG = distalPPG(indx);
+            
+            %apply denoising
+            proximalPPG = filter( obj.BoxFilter, 1, proximalPPG);
+            distalPPG = filter( obj.BoxFilter, 1, distalPPG);
 
-            MinimumPulseDistance = 0.33;
-            MinPeakProminence = 0.5*std(proximalPPG); %Min prominence is one half the standard deviation of the signal
+            %remove baseline
+            proximalPPG = detrend(proximalPPG);
+            distalPPG = detrend(distalPPG);
 
+            MinimumPulseDistance = 0.33; %seconds
+            MinPeakProminence = 0;
 
             %Find pulse peaks in the proximal PPG signal
             [~, locs_ProxPeaks] = findpeaks(proximalPPG, time,...
@@ -80,7 +94,7 @@ classdef BPCalculator < handle
             
             %HR Calculation:
             num_beats = (length(locs_ProxPeaks) + length(locs_DistalPeaks))/2;
-            time_diff = time(end)-time(1);
+            time_diff = (time(end)-time(1))/60;
             HR = num_beats/time_diff;
                    
         end
